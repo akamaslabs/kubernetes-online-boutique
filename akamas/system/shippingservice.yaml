@@ -1,0 +1,10 @@
+name: shippingservice
+description: The shippingservice of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-shippingservice.*
+    container: server

@@ -1,0 +1,10 @@
+name: rediscart
+description: The redis-cart of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-redis-cart.*
+    container: redis

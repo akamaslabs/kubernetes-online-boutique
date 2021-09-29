@@ -1,0 +1,8 @@
+name: online_boutique
+description: The Online Boutique application
+componentType: Web Application
+properties:
+  prometheus:
+    instance: .*
+    job: .*
+    namespace: ak-loadgenerator

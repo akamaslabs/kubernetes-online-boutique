@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ak-loadgenerator
+  namespace: akamas-demo
+spec:
+  selector:
+    matchLabels:
+      app: ak-loadgenerator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ak-loadgenerator
+    spec:
+      subdomain: online-boutique
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      restartPolicy: Always
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: akamas/node
+                    operator: In
+                    values:
+                      - akamas
+      containers:
+        - name: locust-exporter
+          image: containersol/locust_exporter
+        - name: main
+          image: stevalla94/loadgenerator:1.0.0
+          ports:
+            - name: web-ui
+              containerPort: 8089
+            - name: metrics
+              containerPort: 9646
+          env:
+            - name: FRONTEND_ADDR
+              value: "ak-frontend:80"
+            - name: USERS
+              value: "5"
+            - name: RATE
+              value: "1"
+          resources:
+            requests:
+              cpu: 300m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ak-loadgenerator
+  namespace: akamas-demo
+  labels:
+    app: ak-loadgenerator
+spec:
+  type: NodePort
+  selector:
+    app: ak-loadgenerator
+  ports:
+    - name: web-ui
+      protocol: TCP
+      port: 8089
+      targetPort: 8089
+      nodePort: 30899
+    - name: metrics
+      port: 9646
+      targetPort: 9646

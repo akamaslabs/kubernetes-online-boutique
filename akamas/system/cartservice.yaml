@@ -1,0 +1,10 @@
+name: cartservice
+description: The cartservice of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-cartservice.*
+    container: server

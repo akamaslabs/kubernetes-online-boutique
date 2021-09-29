@@ -1,0 +1,151 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ak-prometheus
+rules:
+  - apiGroups: [ "" ]
+    resources:
+      - nodes
+      - nodes/proxy
+      - services
+      - endpoints
+      - pods
+    verbs: [ "get", "list", "watch" ]
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs: [ "get", "list", "watch" ]
+  - nonResourceURLs: [ "/metrics" ]
+    verbs: [ "get" ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ak-prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ak-prometheus
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: akamas-demo
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ak-prometheus-config
+  namespace: akamas-demo
+data:
+  ak-prometheus.yml: |
+    global:
+      scrape_interval:     15s
+      evaluation_interval: 15s
+    scrape_configs:
+      - job_name: 'kubernetes-cadvisor'
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+        - role: node
+        relabel_configs:
+        - action: labelmap
+          regex: __meta_kubernetes_node_label_(.+)
+        - target_label: __address__
+          replacement: kubernetes.default.svc:443
+        - source_labels: [__meta_kubernetes_node_name]
+          regex: (.+)
+          target_label: __metrics_path__
+          replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+      - job_name: 'locust'
+        scrape_interval: 2s
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_container_port_number]
+            action: keep
+            separator: _
+            regex: 'ak-loadgenerator.*_9646'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ak-prometheus
+  namespace: akamas-demo
+  labels:
+    app: ak-prometheus
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: ak-prometheus
+  template:
+    metadata:
+      labels:
+        app: ak-prometheus
+      annotations:
+        ak-prometheus.io/scrape: "true"
+        ak-prometheus.io/port: "9090"
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: akamas/node
+                    operator: In
+                    values:
+                      - akamas
+      containers:
+        - name: ak-prometheus
+          image: quay.io/prometheus/prometheus:v2.0.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - '--storage.tsdb.retention=6h'
+            - '--storage.tsdb.path=/prometheus'
+            - '--config.file=/etc/prometheus/ak-prometheus.yml'
+          command:
+            - /bin/prometheus
+          ports:
+            - name: web
+              containerPort: 9090
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus
+            - name: data
+              mountPath: /prometheus
+      restartPolicy: Always
+      securityContext: { }
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: config-volume
+          configMap:
+            name: ak-prometheus-config
+        - name: data
+          emptyDir: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ak-prometheus
+  namespace: akamas-demo
+  labels:
+    app: ak-prometheus
+spec:
+  selector:
+    app: ak-prometheus
+  type: NodePort
+  ports:
+    - name: ak-prometheus
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+      nodePort: 30900

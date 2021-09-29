@@ -1,0 +1,10 @@
+name: recommendationservice
+description: The recommendationservice of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-recommendationservice.*
+    container: server

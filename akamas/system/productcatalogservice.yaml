@@ -1,0 +1,10 @@
+name: productcatalogservice
+description: The productcatalogservice of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-productcatalogservice.*
+    container: server

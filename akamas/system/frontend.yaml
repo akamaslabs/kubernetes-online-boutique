@@ -1,0 +1,10 @@
+name: frontend
+description: The frontend of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-frontend.*
+    container: server

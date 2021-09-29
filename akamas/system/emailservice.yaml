@@ -1,0 +1,10 @@
+name: emailservice
+description: The emailservice of the online boutique by Google
+componentType: K8s Container
+properties:
+  prometheus:
+    job: .*
+    instance: .*
+    name: .*
+    pod: ak-emailservice.*
+    container: server
