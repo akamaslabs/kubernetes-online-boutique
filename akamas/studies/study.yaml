@@ -1,4 +1,4 @@
-name: Optimizing the Online Boutique by Google
+name: Maximizing Kubernetes Online Boutique throughput while matching SLOs
 system: Online Boutique
 workflow: boutique
 
@@ -6,19 +6,18 @@ goal:
   objective: maximize
   function:
     formula: online_boutique.transactions_throughput
-  constraints:
-    absolute:
-      - online_boutique.transactions_error_rate <= 0.02
+    #  constraints:
+    #absolute:
+    #  - online_boutique.transactions_error_rate <= 0.02
 
 windowing:
   type: trim
-  trim: [1m, 1m]
+  trim: [1m, 0m]
   task: Test
 
 metricsSelection:
   - online_boutique.users
   - online_boutique.transactions_throughput
-  - online_boutique.transactions_error_throughput
   - online_boutique.transactions_error_rate
   - online_boutique.transactions_response_time
   - online_boutique.transactions_response_time_p50
@@ -103,112 +102,90 @@ metricsSelection:
 
 parametersSelection:
   - name: frontend.limits_cpu
-    domain: [0.2, 2.5]
+    domain: [0.1, 0.3]
   - name: frontend.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: adservice.limits_cpu
-    domain: [0.1, 0.5]
+    domain: [0.1, 0.3]
   - name: adservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: cartservice.limits_cpu
-    domain: [0.1, 1.5]
+    domain: [0.1, 0.3]
   - name: cartservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: checkoutservice.limits_cpu
-    domain: [0.1, 1.5]
+    domain: [0.1, 0.3]
   - name: checkoutservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: currencyservice.limits_cpu
-    domain: [0.1, 1.5]
+    domain: [0.1, 0.3]
   - name: currencyservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: emailservice.limits_cpu
     domain: [0.1, 0.5]
   - name: emailservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: paymentservice.limits_cpu
     domain: [0.1, 0.5]
   - name: paymentservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: productcatalogservice.limits_cpu
-    domain: [0.1, 1.5]
+    domain: [0.1, 0.5]
   - name: productcatalogservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: recommendationservice.limits_cpu
-    domain: [0.1, 3.0]
+    domain: [0.1, 0.3]
   - name: recommendationservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: shippingservice.limits_cpu
-    domain: [0.1, 0.5]
+    domain: [0.1, 0.3]
   - name: shippingservice.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
   - name: rediscart.limits_cpu
-    domain: [0.1, 0.5]
+    domain: [0.1, 0.3]
   - name: rediscart.limits_memory
-    domain: [64, 1024]
+    domain: [64, 512]
 
 steps:
   - name: baseline
     type: baseline
     values:
-      frontend.requests_cpu: 0.1
-      frontend.requests_memory: 64
-      frontend.limits_cpu: 0.2
+      frontend.limits_cpu: 0.1
       frontend.limits_memory: 128
 
-      cartservice.requests_cpu: 0.2
-      cartservice.requests_memory: 64
-      cartservice.limits_cpu: 0.3
+      cartservice.limits_cpu: 0.1
       cartservice.limits_memory: 128
 
-      adservice.requests_cpu: 0.2
-      adservice.requests_memory: 180
       adservice.limits_cpu: 0.3
-      adservice.limits_memory: 300
+      adservice.limits_memory: 512
 
-      emailservice.requests_cpu: 0.1
-      emailservice.requests_memory: 64
-      emailservice.limits_cpu: 0.2
+      emailservice.limits_cpu: 0.1
       emailservice.limits_memory: 128
 
-      checkoutservice.requests_cpu: 0.1
-      checkoutservice.requests_memory: 64
-      checkoutservice.limits_cpu: 0.2
+      checkoutservice.limits_cpu: 0.1
       checkoutservice.limits_memory: 128
 
-      recommendationservice.requests_cpu: 0.1
-      recommendationservice.requests_memory: 220
-      recommendationservice.limits_cpu: 0.2
+      recommendationservice.limits_cpu: 0.1
       recommendationservice.limits_memory: 450
 
-      paymentservice.requests_cpu: 0.1
-      paymentservice.requests_memory: 64
-      paymentservice.limits_cpu: 0.2
+      paymentservice.limits_cpu: 0.1
       paymentservice.limits_memory: 128
 
-      productcatalogservice.requests_cpu: 0.1
-      productcatalogservice.requests_memory: 64
-      productcatalogservice.limits_cpu: 0.2
+      productcatalogservice.limits_cpu: 0.1
       productcatalogservice.limits_memory: 128
 
-      currencyservice.requests_cpu: 0.1
-      currencyservice.requests_memory: 64
-      currencyservice.limits_cpu: 0.2
+      currencyservice.limits_cpu: 0.1
       currencyservice.limits_memory: 128
 
-      shippingservice.requests_cpu: 0.1
-      shippingservice.requests_memory: 64
-      shippingservice.limits_cpu: 0.2
+      shippingservice.limits_cpu: 0.1
       shippingservice.limits_memory: 128
 
-      rediscart.requests_cpu: 0.1
-      rediscart.requests_memory: 200
-      rediscart.limits_cpu: 0.125
+      rediscart.limits_cpu: 0.1
       rediscart.limits_memory: 256
 
   - name: optimize
     type: optimize
     optimizer: AKAMAS
-    numberOfExperiments: 200
+    numberOfExperiments: 50
     numberOfTrials: 1
     maxFailedExperiments: 100

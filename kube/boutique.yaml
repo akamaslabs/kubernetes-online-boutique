@@ -338,8 +338,6 @@ spec:
           image: gcr.io/google-samples/microservices-demo/adservice:v0.2.2
           ports:
             - containerPort: 9555
-            - containerPort: 9404
-              hostPort: 9404
           env:
             - name: PORT
               value: "9555"
@@ -378,11 +376,7 @@ spec:
     - name: grpc
       port: 9555
       targetPort: 9555
-    - name: metrics
-      port: 9404
-      targetPort: 9404
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
