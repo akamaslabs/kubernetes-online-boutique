@@ -20,7 +20,7 @@ cp ~/.kube/config /akamas-config/
 sed -i -r "s/certificate-authority:.*/certificate-authority: \/kubeconfig\/ca\.crt/g" /akamas-config/config
 sed -i -r 's/client-certificate:.*/client-certificate: \/kubeconfig\/client\.crt/g' /akamas-config/config
 sed -i -r 's/client-key:.*/client-key: \/kubeconfig\/client\.key/g' /akamas-config/config
-sed -i -r "s/server:.*/server: https:\/\/$HOST_IP:8443/g" /akamas-config/config
+sed -i -r "s/server:.*\(\.*\)/server: https:\/\/$HOST_IP:\1/g" /akamas-config/config
 
 kubectl label node minikube akamas/node=akamas
 kubectl config set-context --current --namespace=akamas-demo
