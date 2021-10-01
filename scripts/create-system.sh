@@ -14,7 +14,7 @@ echo "Installing Kubernetes and Web-Application optimization packs"
 akamas install optimization-pack Kubernetes
 akamas install -f optimization-pack Web-Application
 
-cd akamas/system 2>/dev/null || cd kubernetes/akamas/system || { echo "Run the script inside or one level above the kubernetes-online-boutique folder"; exit 1; }
+cd akamas/system 2>/dev/null || cd kubernetes-online-boutique/akamas/system || { echo "Run the script inside or one level above the kubernetes-online-boutique folder"; exit 1; }
 
 # Create the system which will model the Online Boutique inside Akamas
 echo "Creating the Online Boutique system"
