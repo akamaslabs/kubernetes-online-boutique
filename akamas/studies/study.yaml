@@ -5,18 +5,20 @@ workflow: boutique
 goal:
   objective: maximize
   function:
-    formula: online_boutique.transactions_throughput
-    #  constraints:
-    #absolute:
-    #  - online_boutique.transactions_error_rate <= 0.02
+    formula: online_boutique.transactions_throughput / online_boutique.cost
+      constraints:
+        absolute:
+          - online_boutique.transactions_response_time <= 500
+          - online_boutique.transactions_error_rate <= 0.02
 
 windowing:
   type: trim
-  trim: [1m, 0m]
+  trim: [1m, 30s]
   task: Test
 
 metricsSelection:
   - online_boutique.users
+  - online_boutique.cost
   - online_boutique.transactions_throughput
   - online_boutique.transactions_error_rate
   - online_boutique.transactions_response_time

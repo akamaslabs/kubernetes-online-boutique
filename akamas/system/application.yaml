@@ -5,4 +5,5 @@ properties:
   prometheus:
     instance: .*
     job: .*
-    namespace: ak-loadgenerator
+    namespace: akamas-demo
+    container: server|redis
