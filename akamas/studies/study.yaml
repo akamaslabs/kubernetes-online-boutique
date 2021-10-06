@@ -6,10 +6,10 @@ goal:
   objective: maximize
   function:
     formula: online_boutique.transactions_throughput / online_boutique.cost
-      constraints:
-        absolute:
-          - online_boutique.transactions_response_time <= 500
-          - online_boutique.transactions_error_rate <= 0.02
+  constraints:
+    absolute:
+      - online_boutique.transactions_response_time <= 500
+      - online_boutique.transactions_error_rate <= 0.02
 
 windowing:
   type: trim

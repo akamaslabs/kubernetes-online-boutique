@@ -1,12 +1,14 @@
+#!/bin/bash
+
 SYSTEM_NAME="Online Boutique"
 PROM_ENDPOINT="${1}"
 PROM_PORT="${2-30900}"
 
 if [[ $# -ge 3 ]] || [[ $# -lt 1 ]]; then
-	echo "Wrong arguments."
-	echo "Usage:"
+  echo "Wrong arguments."
+  echo "Usage:"
   echo "  bash install_script.sh PROMETHEUS_HOST PROMETHEUS_PORT"
-	exit 0
+  exit 0
 fi
 
 # Install Kubernetes optimization pack
