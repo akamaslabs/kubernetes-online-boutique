@@ -1,7 +1,7 @@
 provider: Prometheus
 config:
-  address: 18.191.158.224
-  port: 30900
+  address: CLUSTER_IP
+  port: PROM_PORT
 metrics:
   - metric: users
     datasourceMetric: "locust_users"

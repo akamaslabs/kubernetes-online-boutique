@@ -39,7 +39,7 @@ tasks:
         hostname: benchmark
         username: akamas
         password: akamas
-      command: bash run-test.sh CLUSTER_IP
+      command: bash run-test.sh 18.188.217.93
 
   - name: Test
     operator: Sleep
@@ -53,4 +53,4 @@ tasks:
         hostname: benchmark
         username: akamas
         password: akamas
-      command: bash stop-test.sh CLUSTER_IP
+      command: bash stop-test.sh 18.188.217.93
