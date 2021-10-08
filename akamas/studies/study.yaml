@@ -1,4 +1,4 @@
-name: Maximizing Kubernetes Online Boutique throughput while matching SLOs
+name: Maximizing Kubernetes Online Boutique cost efficiency while matching SLOs
 system: Online Boutique
 workflow: boutique
 
@@ -17,13 +17,12 @@ windowing:
   task: Test
 
 metricsSelection:
-  - online_boutique.users
   - online_boutique.cost
   - online_boutique.transactions_throughput
   - online_boutique.transactions_error_rate
   - online_boutique.transactions_response_time
-  - online_boutique.transactions_response_time_p50
   - online_boutique.transactions_response_time_p95
+  - online_boutique.users
   - frontend.container_cpu_used
   - frontend.container_cpu_util
   - frontend.container_cpu_limit
@@ -164,30 +163,27 @@ steps:
       emailservice.limits_cpu: 0.1
       emailservice.limits_memory: 128
 
-      checkoutservice.limits_cpu: 0.1
+      checkoutservice.limits_cpu: 0.2
       checkoutservice.limits_memory: 128
 
       recommendationservice.limits_cpu: 0.1
       recommendationservice.limits_memory: 450
 
-      paymentservice.limits_cpu: 0.1
+      paymentservice.limits_cpu: 0.2
       paymentservice.limits_memory: 128
 
-      productcatalogservice.limits_cpu: 0.1
+      productcatalogservice.limits_cpu: 0.2
       productcatalogservice.limits_memory: 128
 
       currencyservice.limits_cpu: 0.1
       currencyservice.limits_memory: 128
 
-      shippingservice.limits_cpu: 0.1
+      shippingservice.limits_cpu: 0.2
       shippingservice.limits_memory: 128
 
-      rediscart.limits_cpu: 0.1
+      rediscart.limits_cpu: 0.2
       rediscart.limits_memory: 256
 
   - name: optimize
     type: optimize
-    optimizer: AKAMAS
     numberOfExperiments: 50
-    numberOfTrials: 1
-    maxFailedExperiments: 100
