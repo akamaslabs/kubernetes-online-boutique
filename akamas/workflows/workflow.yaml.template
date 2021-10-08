@@ -26,6 +26,7 @@ tasks:
   - name: Check Online Boutique is up
     operator: Executor
     arguments:
+      retries: 0
       host:
         hostname: benchmark
         username: akamas

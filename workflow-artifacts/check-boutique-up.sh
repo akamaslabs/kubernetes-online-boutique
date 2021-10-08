@@ -13,5 +13,5 @@ for service in "${services[@]}"; do
   echo "Describe service ak-$service"
   kubectl describe pod ak-"$service" -n akamas-demo --kubeconfig /kubeconfig/config | grep -Pzo '.*Events(.*\n)*'
   echo "Checking rollout status for service ak-$service"
-  kubectl rollout status --timeout=5m -n akamas-demo deployment ak-"$service" --kubeconfig /kubeconfig/config
+  kubectl rollout status --timeout=3m -n akamas-demo deployment ak-"$service" --kubeconfig /kubeconfig/config
 done
