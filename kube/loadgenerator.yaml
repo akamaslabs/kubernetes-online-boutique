@@ -13,7 +13,6 @@ spec:
       labels:
         app: ak-loadgenerator
     spec:
-      subdomain: online-boutique
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
