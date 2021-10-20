@@ -5,6 +5,7 @@ set -e
 HOST_IP="$1"
 
 echo "Setting up docker for Minikube"
+mkdir -p ~/.docker
 sudo chown -R "$USER":"$USER" ~/.docker/
 
 minikube start --apiserver-port=8999 --apiserver-ips="$HOST_IP" --cpus=4 --memory=8g --ports=30900:30900,30899:30899,30800:30800,8999:8999 --namespace=akamas-demo
