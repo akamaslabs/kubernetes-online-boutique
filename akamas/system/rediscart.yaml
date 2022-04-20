@@ -1,6 +1,6 @@
 name: rediscart
 description: The redis-cart of the online boutique by Google
-componentType: K8s Container
+componentType: Kubernetes Container
 properties:
   prometheus:
     job: .*

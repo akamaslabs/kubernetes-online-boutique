@@ -1,6 +1,6 @@
 name: currencyservice
 description: The currencyservice of the online boutique by Google
-componentType: K8s Container
+componentType: Kubernetes Container
 properties:
   prometheus:
     job: .*
