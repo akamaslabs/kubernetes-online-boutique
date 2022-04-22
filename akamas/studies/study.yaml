@@ -4,12 +4,14 @@ workflow: boutique
 
 goal:
   objective: maximize
+  constraints:
+    absolute: 
+      - name: response_time
+        formula: online_boutique.transactions_response_time <= 500
+      - name: error_rate
+        formula: online_boutique.transactions_error_rate <= 0.02
   function:
     formula: online_boutique.transactions_throughput / online_boutique.cost
-  constraints:
-    absolute:
-      - online_boutique.transactions_response_time <= 500
-      - online_boutique.transactions_error_rate <= 0.02
 
 windowing:
   type: trim
@@ -27,162 +29,162 @@ metricsSelection:
   - frontend.container_cpu_util
   - frontend.container_cpu_limit
   - frontend.container_cpu_throttle_time
-  - frontend.container_mem_used
-  - frontend.container_mem_util
-  - frontend.container_mem_limit
+  - frontend.container_memory_used
+  - frontend.container_memory_util
+  - frontend.container_memory_limit
   - checkoutservice.container_cpu_used
   - checkoutservice.container_cpu_util
   - checkoutservice.container_cpu_limit
   - checkoutservice.container_cpu_throttle_time
-  - checkoutservice.container_mem_used
-  - checkoutservice.container_mem_util
-  - checkoutservice.container_mem_limit
+  - checkoutservice.container_memory_used
+  - checkoutservice.container_memory_util
+  - checkoutservice.container_memory_limit
   - adservice.container_cpu_used
   - adservice.container_cpu_util
   - adservice.container_cpu_limit
   - adservice.container_cpu_throttle_time
-  - adservice.container_mem_used
-  - adservice.container_mem_util
-  - adservice.container_mem_limit
+  - adservice.container_memory_used
+  - adservice.container_memory_util
+  - adservice.container_memory_limit
   - currencyservice.container_cpu_used
   - currencyservice.container_cpu_util
   - currencyservice.container_cpu_limit
   - currencyservice.container_cpu_throttle_time
-  - currencyservice.container_mem_used
-  - currencyservice.container_mem_util
-  - currencyservice.container_mem_limit
+  - currencyservice.container_memory_used
+  - currencyservice.container_memory_util
+  - currencyservice.container_memory_limit
   - shippingservice.container_cpu_used
   - shippingservice.container_cpu_util
   - shippingservice.container_cpu_limit
   - shippingservice.container_cpu_throttle_time
-  - shippingservice.container_mem_used
-  - shippingservice.container_mem_util
-  - shippingservice.container_mem_limit
+  - shippingservice.container_memory_used
+  - shippingservice.container_memory_util
+  - shippingservice.container_memory_limit
   - productcatalogservice.container_cpu_used
   - productcatalogservice.container_cpu_util
   - productcatalogservice.container_cpu_limit
   - productcatalogservice.container_cpu_throttle_time
-  - productcatalogservice.container_mem_used
-  - productcatalogservice.container_mem_util
-  - productcatalogservice.container_mem_limit
+  - productcatalogservice.container_memory_used
+  - productcatalogservice.container_memory_util
+  - productcatalogservice.container_memory_limit
   - recommendationservice.container_cpu_used
   - recommendationservice.container_cpu_util
   - recommendationservice.container_cpu_limit
   - recommendationservice.container_cpu_throttle_time
-  - recommendationservice.container_mem_used
-  - recommendationservice.container_mem_util
-  - recommendationservice.container_mem_limit
+  - recommendationservice.container_memory_used
+  - recommendationservice.container_memory_util
+  - recommendationservice.container_memory_limit
   - emailservice.container_cpu_used
   - emailservice.container_cpu_util
   - emailservice.container_cpu_limit
   - emailservice.container_cpu_throttle_time
-  - emailservice.container_mem_used
-  - emailservice.container_mem_util
-  - emailservice.container_mem_limit
+  - emailservice.container_memory_used
+  - emailservice.container_memory_util
+  - emailservice.container_memory_limit
   - cartservice.container_cpu_used
   - cartservice.container_cpu_util
   - cartservice.container_cpu_limit
   - cartservice.container_cpu_throttle_time
-  - cartservice.container_mem_used
-  - cartservice.container_mem_util
-  - cartservice.container_mem_limit
+  - cartservice.container_memory_used
+  - cartservice.container_memory_util
+  - cartservice.container_memory_limit
   - paymentservice.container_cpu_used
   - paymentservice.container_cpu_util
   - paymentservice.container_cpu_limit
   - paymentservice.container_cpu_throttle_time
-  - paymentservice.container_mem_used
-  - paymentservice.container_mem_util
-  - paymentservice.container_mem_limit
+  - paymentservice.container_memory_used
+  - paymentservice.container_memory_util
+  - paymentservice.container_memory_limit
   - rediscart.container_cpu_used
   - rediscart.container_cpu_util
   - rediscart.container_cpu_limit
   - rediscart.container_cpu_throttle_time
-  - rediscart.container_mem_used
-  - rediscart.container_mem_util
-  - rediscart.container_mem_limit
+  - rediscart.container_memory_used
+  - rediscart.container_memory_util
+  - rediscart.container_memory_limit
 
 parametersSelection:
-  - name: frontend.limits_cpu
-    domain: [0.1, 0.3]
-  - name: frontend.limits_memory
+  - name: frontend.cpu_limit
+    domain: [100, 300]
+  - name: frontend.memory_limit
     domain: [64, 512]
-  - name: adservice.limits_cpu
-    domain: [0.1, 0.3]
-  - name: adservice.limits_memory
+  - name: adservice.cpu_limit
+    domain: [100, 300]
+  - name: adservice.memory_limit
     domain: [64, 512]
-  - name: cartservice.limits_cpu
-    domain: [0.1, 0.3]
-  - name: cartservice.limits_memory
+  - name: cartservice.cpu_limit
+    domain: [100, 300]
+  - name: cartservice.memory_limit
     domain: [64, 512]
-  - name: checkoutservice.limits_cpu
-    domain: [0.1, 0.3]
-  - name: checkoutservice.limits_memory
+  - name: checkoutservice.cpu_limit
+    domain: [100, 300]
+  - name: checkoutservice.memory_limit
     domain: [64, 512]
-  - name: currencyservice.limits_cpu
-    domain: [0.1, 0.3]
-  - name: currencyservice.limits_memory
+  - name: currencyservice.cpu_limit
+    domain: [100, 300]
+  - name: currencyservice.memory_limit
     domain: [64, 512]
-  - name: emailservice.limits_cpu
-    domain: [0.1, 0.5]
-  - name: emailservice.limits_memory
+  - name: emailservice.cpu_limit
+    domain: [100, 500]
+  - name: emailservice.memory_limit
     domain: [64, 512]
-  - name: paymentservice.limits_cpu
-    domain: [0.1, 0.5]
-  - name: paymentservice.limits_memory
+  - name: paymentservice.cpu_limit
+    domain: [100, 500]
+  - name: paymentservice.memory_limit
     domain: [64, 512]
-  - name: productcatalogservice.limits_cpu
-    domain: [0.1, 0.5]
-  - name: productcatalogservice.limits_memory
+  - name: productcatalogservice.cpu_limit
+    domain: [100, 500]
+  - name: productcatalogservice.memory_limit
     domain: [64, 512]
-  - name: recommendationservice.limits_cpu
-    domain: [0.1, 0.3]
-  - name: recommendationservice.limits_memory
+  - name: recommendationservice.cpu_limit
+    domain: [100, 300]
+  - name: recommendationservice.memory_limit
     domain: [64, 512]
-  - name: shippingservice.limits_cpu
-    domain: [0.1, 0.3]
-  - name: shippingservice.limits_memory
+  - name: shippingservice.cpu_limit
+    domain: [100, 300]
+  - name: shippingservice.memory_limit
     domain: [64, 512]
-  - name: rediscart.limits_cpu
-    domain: [0.1, 0.3]
-  - name: rediscart.limits_memory
+  - name: rediscart.cpu_limit
+    domain: [100, 300]
+  - name: rediscart.memory_limit
     domain: [64, 512]
 
 steps:
   - name: baseline
     type: baseline
     values:
-      frontend.limits_cpu: 0.1
-      frontend.limits_memory: 128
+      frontend.cpu_limit: 100
+      frontend.memory_limit: 128
 
-      cartservice.limits_cpu: 0.1
-      cartservice.limits_memory: 128
+      cartservice.cpu_limit: 100
+      cartservice.memory_limit: 128
 
-      adservice.limits_cpu: 0.3
-      adservice.limits_memory: 512
+      adservice.cpu_limit: 300
+      adservice.memory_limit: 512
 
-      emailservice.limits_cpu: 0.1
-      emailservice.limits_memory: 128
+      emailservice.cpu_limit: 100
+      emailservice.memory_limit: 128
 
-      checkoutservice.limits_cpu: 0.2
-      checkoutservice.limits_memory: 128
+      checkoutservice.cpu_limit: 200
+      checkoutservice.memory_limit: 128
 
-      recommendationservice.limits_cpu: 0.1
-      recommendationservice.limits_memory: 450
+      recommendationservice.cpu_limit: 100
+      recommendationservice.memory_limit: 450
 
-      paymentservice.limits_cpu: 0.2
-      paymentservice.limits_memory: 128
+      paymentservice.cpu_limit: 200
+      paymentservice.memory_limit: 128
 
-      productcatalogservice.limits_cpu: 0.2
-      productcatalogservice.limits_memory: 128
+      productcatalogservice.cpu_limit: 200
+      productcatalogservice.memory_limit: 128
 
-      currencyservice.limits_cpu: 0.1
-      currencyservice.limits_memory: 128
+      currencyservice.cpu_limit: 100
+      currencyservice.memory_limit: 128
 
-      shippingservice.limits_cpu: 0.2
-      shippingservice.limits_memory: 128
+      shippingservice.cpu_limit: 200
+      shippingservice.memory_limit: 128
 
-      rediscart.limits_cpu: 0.2
-      rediscart.limits_memory: 256
+      rediscart.cpu_limit: 200
+      rediscart.memory_limit: 256
 
   - name: optimize
     type: optimize
