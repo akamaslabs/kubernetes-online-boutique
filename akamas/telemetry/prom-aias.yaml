@@ -1,0 +1,21 @@
+provider: Prometheus
+config:
+  address: minikube
+  port: 30900
+metrics:
+  - metric: users
+    datasourceMetric: "locust_users"
+  - metric: transactions_throughput
+    datasourceMetric: 'rate(locust_requests_num_requests{name="Aggregated"}[30s]) - rate(locust_requests_num_failures{name="Aggregated"}[30s])'
+  - metric: transactions_error_throughput
+    datasourceMetric: 'rate(locust_requests_num_failures{name="Aggregated"}[30s])'
+  - metric: transactions_error_rate
+    datasourceMetric: "locust_requests_fail_ratio"
+  - metric: transactions_response_time
+    datasourceMetric: 'locust_requests_avg_response_time{name="Aggregated"}'
+  - metric: transactions_response_time_p50
+    datasourceMetric: 'locust_requests_current_response_time_percentile_50'
+  - metric: transactions_response_time_p95
+    datasourceMetric: 'locust_requests_current_response_time_percentile_95'
+  - metric: cost
+    datasourceMetric: 'sum(kube_pod_container_resource_requests{resource="cpu" %FILTERS%})*29 + sum(kube_pod_container_resource_requests{resource="memory" %FILTERS%})/1024/1024/1024*3.2'
