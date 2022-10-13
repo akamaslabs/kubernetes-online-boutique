@@ -27,14 +27,7 @@ fi
 echo "Creating the ${SYSTEM_NAME} system"
 akamas create system system.yaml
 
-# Create the components for the Pods of the Online Boutiques
-declare -a services=(emailservice checkoutservice shippingservice paymentservice rediscart
- adservice frontend recommendationservice cartservice productcatalogservice currencyservice)
-
-for service in "${services[@]}"; do
-  echo "Adding component $service to system"
-  akamas create component "$service".yaml "$SYSTEM_NAME"
-done
+akamas create component components/ ${SYSTEM_NAME}
 
 # Create the online boutique component with e2e metrics
 echo "Adding application component to system"

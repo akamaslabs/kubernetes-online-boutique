@@ -1,0 +1,57 @@
+name: boutique
+tasks:
+  - name: Configure Online Boutique
+    operator: FileConfigurator
+    arguments:
+      source:
+        hostname: benchmark
+        username: akamas
+        password: akamas
+        path: boutique.yaml.templ
+      target:
+        hostname: benchmark
+        username: akamas
+        password: akamas
+        path: boutique.yaml
+
+  - name: Apply new configuration to the Online Boutique
+    operator: Executor
+    arguments:
+      host:
+        hostname: benchmark
+        username: akamas
+        password: akamas
+      command: bash apply-boutique.sh
+
+  - name: Check Online Boutique is up
+    operator: Executor
+    arguments:
+      retries: 0
+      host:
+        hostname: benchmark
+        username: akamas
+        password: akamas
+      command: bash check-boutique-up.sh
+
+  - name: Start Locust Test
+    operator: Executor
+    arguments:
+      host:
+        hostname: benchmark
+        username: akamas
+        password: akamas
+      command: bash run-test.sh minikube
+
+  - name: Test
+    operator: Sleep
+    arguments:
+      seconds: 150
+
+  - name: Stop Locust test
+    operator: Executor
+    arguments:
+      host:
+        hostname: benchmark
+        username: akamas
+        password: akamas
+      command: bash stop-test.sh minikube
