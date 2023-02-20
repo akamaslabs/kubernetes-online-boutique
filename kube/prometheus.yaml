@@ -111,7 +111,7 @@ spec:
                       - akamas
       containers:
         - name: ak-prometheus
-          image: quay.io/prometheus/prometheus:2.37.6
+          image: quay.io/prometheus/prometheus:v2.37.6
           imagePullPolicy: IfNotPresent
           args:
             - '--storage.tsdb.retention=6h'
