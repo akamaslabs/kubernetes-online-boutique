@@ -5,4 +5,4 @@ properties:
   prometheus:
     namespace: akamas-demo
     pod: ak-currencyservice.*
-    container: server
+    container: .*

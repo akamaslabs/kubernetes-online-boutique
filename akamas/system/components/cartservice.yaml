@@ -5,4 +5,4 @@ properties:
   prometheus:
     namespace: akamas-demo
     pod: ak-cartservice.*
-    container: server
+    container: .*
