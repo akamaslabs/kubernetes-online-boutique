@@ -3,7 +3,5 @@ description: The Online Boutique application
 componentType: Web Application
 properties:
   prometheus:
-    instance: .*
-    job: .*
     namespace: akamas-demo
     container: server|redis

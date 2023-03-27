@@ -3,8 +3,6 @@ description: The currencyservice of the online boutique by Google
 componentType: Kubernetes Container
 properties:
   prometheus:
-    job: .*
-    instance: .*
-    name: .*
+    namespace: akamas-demo
     pod: ak-currencyservice.*
-    container: server
+    container: .*

@@ -3,8 +3,6 @@ description: The checkoutservice of the online boutique by Google
 componentType: Kubernetes Container
 properties:
   prometheus:
-    job: .*
-    instance: .*
-    name: .*
+    namespace: akamas-demo
     pod: ak-checkoutservice.*
-    container: server
+    container: .*
